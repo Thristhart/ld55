@@ -2,16 +2,10 @@ import { Instance, Instances, Plane, Text } from "@react-three/drei";
 import { ForwardRefComponent } from "@react-three/drei/helpers/ts-utils";
 import { ThreeElements, useFrame } from "@react-three/fiber";
 import { useLayoutEffect, useRef, useState } from "react";
-import { Mesh, Object3D, Texture, TextureLoader, Vector3 } from "three";
-import forestCardPath from "~/assets/cards/forest.jpg";
-import treeCardPath from "~/assets/cards/tree.jpg";
+import { Mesh, Object3D, Texture, Vector3 } from "three";
 import { BaseCard } from "~/gamestate/cardtypes/basecard";
 import { TreeCard } from "~/gamestate/cardtypes/tree";
 import { centimeters, millimeters } from "~/util/units";
-const cardTextureLoader = new TextureLoader();
-
-const treeCardTexture = cardTextureLoader.load(treeCardPath);
-const forestCardTexture = cardTextureLoader.load(forestCardPath);
 
 const width = centimeters(6.3);
 const height = centimeters(9.01);
@@ -135,13 +129,13 @@ function CardInstance(props: CardInstanceProps) {
   );
 }
 
-interface TreeCardsProps {
+interface TreeCardsProps extends CardProps {
   trees: TreeCard[];
 }
 export function TreeCards(props: TreeCardsProps) {
   return (
     <Instances>
-      <Card frontTexture={treeCardTexture} backTexture={forestCardTexture} />
+      <Card frontTexture={TreeCard.frontTexture} backTexture={TreeCard.backTexture} />
       {props.trees.map((tree) => (
         <CardInstance card={tree} key={tree.id} />
       ))}
