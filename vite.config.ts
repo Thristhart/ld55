@@ -8,5 +8,6 @@ export default defineConfig( {
             "~": path.resolve(__dirname, "src"),
         },
     },
+    base: "/ld55/",
     plugins: [react()],
 })
