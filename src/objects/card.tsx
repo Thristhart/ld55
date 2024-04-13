@@ -129,7 +129,7 @@ function CardInstance(props: CardInstanceProps) {
   );
 }
 
-interface TreeCardsProps extends CardProps {
+interface TreeCardsProps {
   trees: TreeCard[];
 }
 export function TreeCards(props: TreeCardsProps) {
