@@ -1,7 +1,5 @@
 import { Instance, InstanceProps, Instances } from "@react-three/drei";
-import { MeshProps } from "@react-three/fiber";
-import React from "react";
-import { Mesh, Texture, TextureLoader } from "three";
+import { Texture, TextureLoader } from "three";
 import forestCardPath from "~/assets/cards/forest.jpg";
 import treeCardPath from "~/assets/cards/tree.jpg";
 import { centimeters, millimeters } from "~/util/units";
@@ -31,17 +29,6 @@ function Card(props: CardProps) {
       <meshLambertMaterial color="#693030" attach={"material-4"} />
       <meshLambertMaterial color="#693030" attach={"material-5"} />
     </>
-  );
-}
-
-interface TreeCardProps extends MeshProps {
-  meshRef: React.RefObject<Mesh>;
-}
-export function TreeCard(props: TreeCardProps) {
-  return (
-    <mesh {...props} ref={props.meshRef}>
-      <Card frontTexture={treeCardTexture} backTexture={forestCardTexture} />
-    </mesh>
   );
 }
 
