@@ -15,7 +15,7 @@ tableTexture.wrapT = RepeatWrapping;
 export function Table(props: MeshProps) {
   return (
     <Plane {...props} args={[size, size]}>
-      <meshPhongMaterial map={tableTexture} />
+      <meshPhongMaterial map={tableTexture} depthWrite={false} />
     </Plane>
   );
 }
