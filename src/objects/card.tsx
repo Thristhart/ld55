@@ -16,8 +16,6 @@ const depth = millimeters(0.3); // normally 0.3
 
 export const CardDimensions = { width, height, depth };
 
-const radius = millimeters(3);
-
 interface CardProps {
   readonly frontTexture: Texture;
   readonly backTexture: Texture;
