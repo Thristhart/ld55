@@ -96,6 +96,11 @@ function CardInstance(props: CardInstanceProps) {
       card.attach(ref.current);
     }
   });
+  if (card.stack) {
+    if (card.stack.cards[card.stack.cards.length - 1] !== card) {
+      return null;
+    }
+  }
   return (
     <Instance position={card.initialPosition} ref={ref}>
       <TextWithBackground

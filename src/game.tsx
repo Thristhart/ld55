@@ -5,10 +5,17 @@ import { TreeCards } from "./objects/card";
 import { Table } from "./objects/table";
 import { millimeters } from "./util/units";
 import { tick } from "./gamestate/tick";
+import { stacks } from "./gamestate/stacks";
+import { RenderStack } from "./objects/stack";
+import { useState } from "react";
+
+export let forceRender = () => {};
 
 function CanvasContents() {
   useFrame(tick);
 
+  const [_, setRenderHack] = useState(0);
+  forceRender = () => setRenderHack((i) => i + 1);
   return (
     <>
       <ambientLight intensity={Math.PI / 2} />
@@ -35,6 +42,9 @@ function CanvasContents() {
         rotation={[-Math.PI / 2, 0, 0]}
       />
 
+      {stacks.map((stack) => (
+        <RenderStack key={stack.id} stack={stack} />
+      ))}
       <TreeCards trees={cards.trees} />
     </>
   );

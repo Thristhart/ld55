@@ -1,5 +1,6 @@
 import { RootState } from "@react-three/fiber";
 import { Object3D, Vector3 } from "three";
+import { Stack } from "../stacks";
 
 let globalIdCounter = 0;
 
@@ -8,6 +9,7 @@ export class BaseCard {
   public id: number;
   public name: string;
   public description: string;
+  public stack: Stack | undefined;
   constructor(public initialPosition: Vector3) {
     this.id = globalIdCounter++;
     this.name = "Base Card";
