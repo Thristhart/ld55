@@ -6,8 +6,12 @@ let globalIdCounter = 0;
 export class BaseCard {
   public object3D: Object3D | undefined;
   public id: number;
+  public name: string;
+  public description: string;
   constructor(public initialPosition: Vector3) {
     this.id = globalIdCounter++;
+    this.name = "Base Card";
+    this.description = `Base Description`;
   }
 
   attach(newObject: Object3D) {

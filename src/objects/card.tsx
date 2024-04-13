@@ -115,7 +115,7 @@ function CardInstance(props: CardInstanceProps) {
         rotation={[-Math.PI / 2, 0, 0]}
         position={[-width / 2, depth, -height / 2 + millimeters(1.5)]}
       >
-        &nbsp;Teferi, Time Raveler&nbsp;
+        &nbsp;{card.name}&nbsp;
       </TextWithBackground>
       <TextWithBackground
         textProps={{
@@ -129,14 +129,7 @@ function CardInstance(props: CardInstanceProps) {
         position={[0, depth, height / 2 - centimeters(0.5)]}
         padding={millimeters(1)}
       >
-        Opponents can cast spells only as though they were sorcieries and can
-        attack Teferi as though he were you. Put 4 loyalty (use counters) on
-        Teferi. Any damage he suffers depletes that much loyalty. If Teferi has
-        no loyalty, he abandons you. During your turn, you may add 1 loyalty to
-        allow you to cast sorceries as though they were instants until your next
-        turn; or you may spend 3 loyalty, then the owner of target artifact,
-        creature, or enchantment returns it to hand and you draw a card. Any
-        enchantments on it are discarded.
+        {card.description}
       </TextWithBackground>
     </Instance>
   );
