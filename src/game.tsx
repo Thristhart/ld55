@@ -1,22 +1,16 @@
-import {
-  CameraControls,
-  InstanceProps,
-  PerspectiveCamera,
-} from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { CardDimensions, TreeCards } from "./objects/card";
+import { CameraControls, PerspectiveCamera } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { cards } from "./gamestate/cards";
+import { TreeCards } from "./objects/card";
 import { Table } from "./objects/table";
 import { millimeters } from "./util/units";
+import { tick } from "./gamestate/tick";
 
-const trees: InstanceProps[] = [];
+function CanvasContents() {
+  useFrame(tick);
 
-for (let i = 0; i < 100; i++) {
-  trees.push({ position: [i * CardDimensions.width * 1.2 - 1, 0, 0] });
-}
-
-export function Game() {
   return (
-    <Canvas gl={{ logarithmicDepthBuffer: true }}>
+    <>
       <ambientLight intensity={Math.PI / 2} />
       <spotLight
         position={[10, 10, 10]}
@@ -41,7 +35,15 @@ export function Game() {
         rotation={[-Math.PI / 2, 0, 0]}
       />
 
-      <TreeCards trees={trees} />
+      <TreeCards trees={cards.trees} />
+    </>
+  );
+}
+
+export function Game() {
+  return (
+    <Canvas>
+      <CanvasContents />
     </Canvas>
   );
 }

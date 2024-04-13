@@ -1,16 +1,12 @@
-import {
-  Instance,
-  InstanceProps,
-  Instances,
-  Plane,
-  Text,
-} from "@react-three/drei";
+import { Instance, Instances, Plane, Text } from "@react-three/drei";
 import { ForwardRefComponent } from "@react-three/drei/helpers/ts-utils";
-import { ReactThreeFiber, ThreeElements, useFrame } from "@react-three/fiber";
-import { Suspense, useMemo, useRef, useState } from "react";
-import { Mesh, Texture, TextureLoader, Vector3 } from "three";
+import { ThreeElements, useFrame } from "@react-three/fiber";
+import { useLayoutEffect, useRef, useState } from "react";
+import { Mesh, Object3D, Texture, TextureLoader, Vector3 } from "three";
 import forestCardPath from "~/assets/cards/forest.jpg";
 import treeCardPath from "~/assets/cards/tree.jpg";
+import { BaseCard } from "~/gamestate/cardtypes/basecard";
+import { TreeCard } from "~/gamestate/cardtypes/tree";
 import { centimeters, millimeters } from "~/util/units";
 const cardTextureLoader = new TextureLoader();
 
@@ -95,53 +91,66 @@ function TextWithBackground(
   );
 }
 
+interface CardInstanceProps {
+  card: BaseCard;
+}
+function CardInstance(props: CardInstanceProps) {
+  const { card } = props;
+  const ref = useRef<Object3D>(null);
+  useLayoutEffect(() => {
+    if (ref.current) {
+      card.attach(ref.current);
+    }
+  });
+  return (
+    <Instance position={card.initialPosition} ref={ref}>
+      <TextWithBackground
+        textProps={{
+          color: "black",
+          fontSize: 0.005,
+          anchorY: "top",
+          anchorX: "left",
+          maxWidth: width - centimeters(1),
+        }}
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[-width / 2, depth, -height / 2 + millimeters(1.5)]}
+      >
+        &nbsp;Teferi, Time Raveler&nbsp;
+      </TextWithBackground>
+      <TextWithBackground
+        textProps={{
+          color: "black",
+          fontSize: 0.002,
+          anchorY: "bottom",
+          anchorX: "center",
+          maxWidth: width - centimeters(1),
+        }}
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, depth, height / 2 - centimeters(0.5)]}
+        padding={millimeters(1)}
+      >
+        Opponents can cast spells only as though they were sorcieries and can
+        attack Teferi as though he were you. Put 4 loyalty (use counters) on
+        Teferi. Any damage he suffers depletes that much loyalty. If Teferi has
+        no loyalty, he abandons you. During your turn, you may add 1 loyalty to
+        allow you to cast sorceries as though they were instants until your next
+        turn; or you may spend 3 loyalty, then the owner of target artifact,
+        creature, or enchantment returns it to hand and you draw a card. Any
+        enchantments on it are discarded.
+      </TextWithBackground>
+    </Instance>
+  );
+}
+
 interface TreeCardsProps {
-  trees: InstanceProps[];
+  trees: TreeCard[];
 }
 export function TreeCards(props: TreeCardsProps) {
   return (
     <Instances>
       <Card frontTexture={treeCardTexture} backTexture={forestCardTexture} />
-      {props.trees.map((tree, index) => (
-        <Instance key={index} {...tree}>
-          <Suspense>
-            <TextWithBackground
-              textProps={{
-                color: "black",
-                fontSize: 0.005,
-                anchorY: "top",
-                anchorX: "left",
-                maxWidth: width - centimeters(1),
-              }}
-              rotation={[-Math.PI / 2, 0, 0]}
-              position={[-width / 2, depth, -height / 2 + millimeters(1.5)]}
-            >
-              &nbsp;Teferi, Time Raveler&nbsp;
-            </TextWithBackground>
-            <TextWithBackground
-              textProps={{
-                color: "black",
-                fontSize: 0.002,
-                anchorY: "bottom",
-                anchorX: "center",
-                maxWidth: width - centimeters(1),
-              }}
-              rotation={[-Math.PI / 2, 0, 0]}
-              position={[0, depth, height / 2 - centimeters(0.5)]}
-              padding={millimeters(1)}
-            >
-              Opponents can cast spells only as though they were sorcieries and
-              can attack Teferi as though he were you. Put 4 loyalty (use
-              counters) on Teferi. Any damage he suffers depletes that much
-              loyalty. If Teferi has no loyalty, he abandons you. During your
-              turn, you may add 1 loyalty to allow you to cast sorceries as
-              though they were instants until your next turn; or you may spend 3
-              loyalty, then the owner of target artifact, creature, or
-              enchantment returns it to hand and you draw a card. Any
-              enchantments on it are discarded.
-            </TextWithBackground>
-          </Suspense>
-        </Instance>
+      {props.trees.map((tree) => (
+        <CardInstance card={tree} key={tree.id} />
       ))}
     </Instances>
   );
